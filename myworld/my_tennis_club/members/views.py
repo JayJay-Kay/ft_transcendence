@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.template import loader
 from .models import Member
 
@@ -82,3 +83,31 @@ def three(request):
 def pong_main(request):
   template = loader.get_template("pong_main.html")
   return HttpResponse(template.render())
+
+
+def api_rank(request):
+    # 예시 데이터 (실제 데이터는 데이터베이스나 다른 소스에서 가져오세요)
+    data = {
+        "2d-1vs1-top5": {
+            "players": ["player1", "player2"],
+            "win": ["30", "20"],
+            "total": ["50", "30"]
+        },
+        "2d-tournament-top5": {
+            "players": ["player6", "player7", "player8", "player9", "player10"],
+            "win": ["30", "20", "10", "3", "1"],
+            "total": ["50", "30", "14", "8", "1"]
+        },
+        "3d-1vs1-top5": {
+            "players": ["player11", "player12", "player13", "player14", "player15"],
+            "win": ["30", "20", "10", "3", "1"],
+            "total": ["50", "30", "14", "8", "1"]
+        },
+        "3d-tournament-top5": {
+            "players": [],
+            "win": [],
+            "total": []
+        },
+    }
+
+    return JsonResponse(data)

@@ -18,4 +18,5 @@ urlpatterns = [
     path('pong_multi/', views.pong_multi, name='pong_multi'),
     path('three/', views.three, name='three'),
     path('pong_main/', views.pong_main, name='pong_main'),
+    path('api/rank', views.api_rank, name='api_rank'),
 ]
