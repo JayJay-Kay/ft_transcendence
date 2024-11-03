@@ -39,13 +39,13 @@ export function twoCheckTourResults(currentLanguage) {
 
 	if (backBtn) {
 		backBtn.addEventListener('click', () => {
-			fetch('http://127.0.0.1:8000/api/save-game-result/', {
+			fetch('https://127.0.0.1:8000/api/save-game-result/', {
 				method: 'POST', // HTTP 메서드 설정
 				headers: {
 						'Content-Type': 'application/json', // 전송할 데이터의 형식 지정
 				},
 				body: JSON.stringify({ // 전송할 데이터
-						'game-mode': '3d-tournament',
+						'game-mode': '2d-tournament',
 						'players': [`${tourNicknames[0]}`, `${tourNicknames[1]}`, `${tourNicknames[2]}`, `${tourNicknames[3]}`],
 						'winner-name': `${tourNicknames[6]}`
 				})

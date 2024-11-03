@@ -13,21 +13,21 @@
     background-color: white;
     padding: 20px;
     box-shadow: 0 0 10px black;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 .leaderboard h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: clamp(18px, 3vw, 24px);
 }
 
 .header-row, .player {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    padding: 20px;
     border-bottom: 1px solid gray;
-    font-size: clamp(12px, 1.8vw, 15px);
+    font-size: clamp(10px, 1.8vw, 15px);
 }
 
 .header-row {
@@ -40,12 +40,20 @@
     flex-basis: 30%;
 }
 
-.name-field {
-    flex-basis: 40%;
+.rank-field {
+    flex-basis: 10%;
 }
 
-.score-field, .total-play-field {
-    flex-basis: 30%;
+.name-field {
+    flex-basis: 70%;
+}
+
+.blank-field {
+    flex-basis: 5%;
+}
+
+.score-field{
+    flex-basis: 10%;
 }
 
 .leaderboard-list {
