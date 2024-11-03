@@ -11,6 +11,23 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "ping", "127.0.0.1"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  blockchain:
+    build: ./ganache
+    ports:
+      - "8545:8545"
+    healthcheck:
+      test: ["CMD", "ping", "127.0.0.1"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
 
   web:
     build: ./BE
@@ -28,7 +45,11 @@ services:
     ports:
       - "8000:443"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+      blockchain:
+        condition: service_healthy
+
 
   frontend:
     build: ./FE/.
@@ -37,7 +58,7 @@ services:
     volumes:
       - ./FE:/usr/share/nginx/html
     ports:
-      - "443:443"  
+      - "443:443"
 
 volumes:
   pg_data:
