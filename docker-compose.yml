@@ -3,6 +3,7 @@ version: "3.8"
 services:
   db:
     image: postgres
+    restart: always
     environment:
       POSTGRES_DB: ft_transcendence
       POSTGRES_USER: ${DB_USER}
@@ -12,25 +13,19 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "ping", "127.0.0.1"]
-      interval: 1m30s
-      timeout: 30s
-      retries: 5
-      start_period: 30s
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}"]
 
   blockchain:
     build: ./ganache
+    restart: always
     ports:
       - "8545:8545"
     healthcheck:
-      test: ["CMD", "ping", "127.0.0.1"]
-      interval: 1m30s
-      timeout: 30s
-      retries: 5
-      start_period: 30s
+      test: ["CMD", "ping", "-c", "1", "127.0.0.1"]
 
   web:
     build: ./BE
+    restart: always
     env_file:
       - .env
     environment:
@@ -45,15 +40,17 @@ services:
     ports:
       - "8000:443"
     depends_on:
-      db:
-        condition: service_healthy
       blockchain:
         condition: service_healthy
-
+      db:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "https://127.0.0.1/", "||", "exit", "1"]
 
   frontend:
     build: ./FE/.
     image: nginx:1.0
+    restart: always
     container_name: frontend
     volumes:
       - ./FE:/usr/share/nginx/html
