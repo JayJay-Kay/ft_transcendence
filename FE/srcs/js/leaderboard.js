@@ -1,13 +1,3 @@
-// const top3 = [
-//    { "2d_1vs1": ['a', 'b', 'c'], win: [3, 2, 1], total: [6, 4, 2] },
-//    { "2d_tournament": ['c', 'd', ''], win: [5, 3, ''], total: [8, 5, ''] },
-//    { "3d_1vs1": ['e', 'f', ''], win: [4, 2, ''], total: [7, 4, ''] },
-//    { "3d_tournament": ['g', 'h', ''], win: [6, 4, ''], total: [10, 7, ''] }
-// ];
-
-//위와 같은 자료구조로 온다 가정하고 로직짬
-//fetch로 받을경우 아래와 같은 함수 사용예정
-
 let top3 = []; // 데이터를 저장할 변수를 let으로 선언
 
 export async function fetchTop3Data() {
@@ -22,10 +12,10 @@ export async function fetchTop3Data() {
         console.log("전체 TOP3 데이터:", top3);
         
         // 특정 키에 접근하여 데이터 확인
-        console.log("2D 1vs1 TOP3:", top3["2d-1vs1-top3"]);
-        console.log("3D 1vs1 TOP3:", top3["3d-1vs1-top3"]);
-
-        // updateLeaderboard(top3);
+        // console.log("2D 1vs1 TOP3:", top3["2d-1vs1-top3"]);
+        // console.log("3D 1vs1 TOP3:", top3["3d-1vs1-top3"]);
+        // console.log("2D tour TOP3:", top3["2d-tournament-top3"]);
+        // console.log("3D tour TOP3:", top3["3d-tournament-top3"]);
 
         modes.forEach(mode => updateLeaderboard(mode.modeKey, mode.modeIndex, mode.id));
     } catch (error) {
@@ -67,22 +57,16 @@ function updateLeaderboard(modeKey, modeIndex, listId) {
     leaderboardList.innerHTML = ''; // 기존 목록 초기화
 
     const modeData = top3[modeKey];
-    console.log('modeIndex ' + modeKey);
-    console.log('top3 ' + top3 );
-    console.log('top3[modeIndex] ' + top3[modeKey]);
 
-    for (let i = 0; i < 3; i++) {
-        if (modeData && modeData[modeKey] && modeData[modeKey][i]) {  // 이름이 있는 경우에만 표시
-            const playerDiv = document.createElement('div');
-            playerDiv.classList.add('player');
-
-            playerDiv.innerHTML = `
-                <span class="name-field">${i + 1}. ${modeData[modeKey][i]}</span>
-                <span class="score-field">${modeData.win[i]}</span>
-                <span class="total-play-field">${modeData.total[i]}</span>`;
-            leaderboardList.appendChild(playerDiv);
-        }
-    }
+    let i = 0;
+    modeData.forEach((data) => {
+        const playerDiv = document.createElement('div');
+        playerDiv.classList.add('player');
+        playerDiv.innerHTML = `
+            <span class="name-field">${i + 1}. ${data['name']}</span>
+            <span class="score-field">${data['win_count']}</span>`;
+        leaderboardList.appendChild(playerDiv);  
+    });
 }
 
 
@@ -94,6 +78,3 @@ export function showLeaderboard() {
 export function hideLeaderboard() {
     container.style.display = 'none';
 }
-
-// 각 모드에 맞는 순위표 업데이트 호출
-// modes.forEach(mode => updateLeaderboard(mode.modeKey, mode.modeIndex, mode.id));
