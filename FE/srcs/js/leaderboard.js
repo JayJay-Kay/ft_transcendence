@@ -14,9 +14,20 @@ export async function fetchTop3Data() {
     try {
         const response = await fetch('https://127.0.0.1:8000/api/game-rankings'); // 로컬 JSON 파일 경로 또는 서버 URL 사용
         if (!response.ok) throw new Error('네트워크 응답 오류');
+        console.log('fetchTop3Data done!' ); // 데이터 확인용 로그
+
         top3 = await response.json();
-        console.log('fetchTop3Data' + top3); // 데이터 확인용 로그
-        updateLeaderboard(top3);
+
+        // 전체 데이터 구조 확인
+        console.log("전체 TOP3 데이터:", top3);
+        
+        // 특정 키에 접근하여 데이터 확인
+        console.log("2D 1vs1 TOP3:", top3["2d-1vs1-top3"]);
+        console.log("3D 1vs1 TOP3:", top3["3d-1vs1-top3"]);
+
+        // updateLeaderboard(top3);
+
+        modes.forEach(mode => updateLeaderboard(mode.modeKey, mode.modeIndex, mode.id));
     } catch (error) {
         console.error('데이터 가져오기 오류:', error);
     }
@@ -26,10 +37,10 @@ const container = document.createElement("div");
 container.classList.add("leaderboard-container");
 
 const modes = [
-    { title: "2D 1vs1", id: "leaderboard-list1", modeKey: "2d_1vs1", modeIndex: 0 },
-    { title: "2D 1vs1vs1vs1", id: "leaderboard-list2", modeKey: "2d_tournament", modeIndex: 1 },
-    { title: "3D 1vs1", id: "leaderboard-list3", modeKey: "3d_1vs1", modeIndex: 2 },
-    { title: "3D 1vs1vs1vs1", id: "leaderboard-list4", modeKey: "3d_tournament", modeIndex: 3 }
+    { title: "2D 1vs1", id: "leaderboard-list1", modeKey: "2d-1vs1-top3", modeIndex: 0 },
+    { title: "2D 1vs1vs1vs1", id: "leaderboard-list2", modeKey: "2d-tournament-top3", modeIndex: 1 },
+    { title: "3D 1vs1", id: "leaderboard-list3", modeKey: "3d-1vs1-top3", modeIndex: 2 },
+    { title: "3D 1vs1vs1vs1", id: "leaderboard-list4", modeKey: "3d-tournament-top3", modeIndex: 3 }
 ];
 
 modes.forEach(mode => {
@@ -55,7 +66,10 @@ function updateLeaderboard(modeKey, modeIndex, listId) {
     const leaderboardList = document.getElementById(listId);
     leaderboardList.innerHTML = ''; // 기존 목록 초기화
 
-    const modeData = top3[modeIndex];
+    const modeData = top3[modeKey];
+    console.log('modeIndex ' + modeKey);
+    console.log('top3 ' + top3 );
+    console.log('top3[modeIndex] ' + top3[modeKey]);
 
     for (let i = 0; i < 3; i++) {
         if (modeData && modeData[modeKey] && modeData[modeKey][i]) {  // 이름이 있는 경우에만 표시
@@ -82,4 +96,4 @@ export function hideLeaderboard() {
 }
 
 // 각 모드에 맞는 순위표 업데이트 호출
-modes.forEach(mode => updateLeaderboard(mode.modeKey, mode.modeIndex, mode.id));
+// modes.forEach(mode => updateLeaderboard(mode.modeKey, mode.modeIndex, mode.id));
