@@ -45,7 +45,7 @@ export function twoCheckTourResults(currentLanguage) {
 						'Content-Type': 'application/json', // 전송할 데이터의 형식 지정
 				},
 				body: JSON.stringify({ // 전송할 데이터
-						'game-mode': '3d-tournament',
+						'game-mode': '2d-tournament',
 						'players': [`${tourNicknames[0]}`, `${tourNicknames[1]}`, `${tourNicknames[2]}`, `${tourNicknames[3]}`],
 						'winner-name': `${tourNicknames[6]}`
 				})
