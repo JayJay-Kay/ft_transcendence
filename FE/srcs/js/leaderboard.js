@@ -40,9 +40,11 @@ modes.forEach(mode => {
     leaderboard.innerHTML = `
         <h2 class="title-text">${mode.title}</h2>
         <div class="header-row">
+            <span class="rank-field">rank</span>
+            <span class="black-field"></span>
             <span class="name-field">id</span>
+            <span class="black-field"></span>
             <span class="score-field">win</span>
-            <span class="total-play-field">plays</span>
         </div>
         <div class="leaderboard-list" id="${mode.id}"></div>
     `;
@@ -58,12 +60,15 @@ function updateLeaderboard(modeKey, modeIndex, listId) {
 
     const modeData = top3[modeKey];
 
-    let i = 0;
+    let i = 1;
     modeData.forEach((data) => {
         const playerDiv = document.createElement('div');
         playerDiv.classList.add('player');
         playerDiv.innerHTML = `
-            <span class="name-field">${i + 1}. ${data['name']}</span>
+            <span class="rank-field">${i++}</span>
+            <span class="black-field"></span>
+            <span class="name-field">${data['name']}</span>
+            <span class="black-field"></span>
             <span class="score-field">${data['win_count']}</span>`;
         leaderboardList.appendChild(playerDiv);  
     });
